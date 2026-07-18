@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: archiving-system
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build && cd server && npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20

@@ -1,0 +1,58 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start Frontend",
+            "type": "shell",
+            "command": "npm.cmd",
+            "args": [
+                "run",
+                "dev"
+            ],
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "custom",
+                "pattern": {
+                    "regexp": "^$"
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "APP_START_BEGUN",
+                    "endsPattern": "APP_START_ENDED"
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Start Backend",
+            "type": "shell",
+            "command": "npm.cmd",
+            "args": [
+                "run",
+                "start"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/server"
+            },
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "custom",
+                "pattern": {
+                    "regexp": "^$"
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "APP_START_BEGUN",
+                    "endsPattern": "APP_START_ENDED"
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        }
+    ]
+}
