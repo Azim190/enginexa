@@ -107,7 +107,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                                 EngiNexa
                             </p>
                             <p className="text-slate-400 dark:text-brand-300 text-[10px] tracking-wider mt-0.5 font-medium">
-                                {isRTL ? 'استشارات هندسية' : 'Engineering'}
+                                {isRTL ? 'نظام الأرشفة الذكي' : 'Archiving System'}
                             </p>
                         </div>
                     </div>

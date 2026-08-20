@@ -225,7 +225,7 @@ export const CorrespondencePage: React.FC<CorrespondencePageProps> = ({ type }) 
                         {/* Printable Header */}
                         <div className="hidden print:block text-center py-6 border-b border-slate-200 mb-6">
                             <h1 className="text-2xl font-bold text-brand-700 uppercase" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                EngiNexa Engineering Consultants
+                                EngiNexa
                             </h1>
                             <p className="text-slate-500 text-sm mt-1">{pageTitle} Log Sheet</p>
                             <p className="text-xs text-slate-400 mt-0.5">Date generated: {new Date().toLocaleDateString()}</p>

@@ -49,7 +49,7 @@ const resources = {
     ar: {
         translation: {
             "app": {
-                "title": "EngiNexa للاستشارات الهندسية",
+                "title": "EngiNexa",
                 "login": "تسجيل الدخول",
                 "logout": "تسجيل الخروج",
                 "dashboard": "لوحة التحكم",
