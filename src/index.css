@@ -106,8 +106,9 @@
 
   /* Sidebar link */
   .nav-link {
-    @apply flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
-           text-brand-200 hover:bg-white/10 hover:text-white text-sm font-medium;
+    @apply flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all duration-200
+           text-slate-600 hover:text-brand-700 hover:bg-slate-100/80
+           dark:text-slate-300 dark:hover:text-white dark:hover:bg-white/10 text-sm font-medium;
     font-family: 'Syne', sans-serif;
   }
 
@@ -116,7 +117,8 @@
   }
 
   .nav-link-active {
-    @apply bg-gold-500/20 text-gold-300 border border-gold-500/30;
+    @apply bg-gold-50 text-gold-700 border border-gold-300/80 font-semibold shadow-sm
+           dark:bg-gold-500/20 dark:text-gold-300 dark:border-gold-500/40;
   }
 
   /* Glass effect */
@@ -255,7 +257,7 @@
   border-color: #0b3d4e !important;
 }
 
-.dark aside.bg-brand-600 {
+.dark aside {
   background-color: #04161c !important; /* Slightly darker teal sidebar */
 }
 

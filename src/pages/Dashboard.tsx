@@ -475,27 +475,21 @@ export const Dashboard = () => {
                     )}
 
                     {/* ── Support Banner ── */}
-                    <div className="relative overflow-hidden rounded-2xl bg-brand-600 p-8 text-white">
-                        <div className="mashrabiya-overlay absolute inset-0" />
-                        <div
-                            className="absolute inset-0 opacity-20"
-                            style={{
-                                background: 'linear-gradient(135deg, transparent 60%, rgba(200,150,62,0.5) 60%)'
-                            }}
-                        />
+                    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-brand-50 via-white to-gold-50/60 dark:from-brand-800 dark:via-brand-900 dark:to-brand-950 p-6 md:p-8 border border-gold-200/80 dark:border-brand-700 shadow-sm text-brand-900 dark:text-white">
+                        <div className="mashrabiya-overlay absolute inset-0 opacity-20 dark:opacity-10 pointer-events-none" />
                         <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                             <div>
                                 <h3
-                                    className="text-xl font-bold mb-1"
-                                    style={{ fontFamily: "'Playfair Display', serif" }}
+                                    className="text-xl font-bold mb-1 text-brand-900 dark:text-white"
+                                    style={{ fontFamily: isRTL ? "'Cairo', sans-serif" : "'Playfair Display', serif" }}
                                 >
                                     {t('app.need_help')}
                                 </h3>
-                                <p className="text-brand-200 text-sm max-w-md">{t('app.need_help_desc')}</p>
+                                <p className="text-slate-600 dark:text-brand-200 text-sm max-w-md">{t('app.need_help_desc')}</p>
                             </div>
                             <button
                                 onClick={openSupport}
-                                className="px-6 py-2.5 bg-gold-500 text-white rounded-xl font-semibold text-sm hover:bg-gold-600 transition-colors shadow-lg flex-shrink-0"
+                                className="px-6 py-2.5 bg-gold-500 text-white rounded-xl font-semibold text-sm hover:bg-gold-600 transition-all shadow-md active:scale-95 flex-shrink-0"
                             >
                                 {t('app.contact_support')}
                             </button>
