@@ -27,7 +27,7 @@ const typeColors: Record<string, string> = {
     'supervision-client':     'bg-purple-500',
 };
 
-const renderFilesList = (value: string | undefined, defaultLabel: string, bgClass: string, IconComponent: any) => {
+const renderFilesList = (value: string | undefined, defaultLabel: string, _bgClass: string, IconComponent: any) => {
     if (!value) return null;
     let filesList: { name: string; url: string }[] = [];
     let isJson = false;

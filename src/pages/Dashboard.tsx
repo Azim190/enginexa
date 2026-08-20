@@ -4,7 +4,7 @@ import {
     Building2, Ruler, Map, Zap, Building,
     Search, Phone, User, Calendar, MapPin,
     Clock, ArrowRight, FolderOpen, Factory, Briefcase,
-    Cloud, ExternalLink, FileText
+    Cloud, FileText
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useOutletContext } from 'react-router-dom';

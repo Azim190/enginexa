@@ -23,7 +23,7 @@ export const FileUploadZone: React.FC<FileUploadZoneProps> = ({
     value,
     onChange
 }) => {
-    const { t, i18n } = useTranslation();
+    const { i18n } = useTranslation();
     const isRTL = i18n.dir() === 'rtl';
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isDragActive, setIsDragActive] = useState(false);
