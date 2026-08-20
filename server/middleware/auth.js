@@ -1,6 +1,6 @@
 const { openDb } = require('../db');
 
-// Middleware to authenticate user sessions
+// Middleware to authenticate user sessions with multi-tenant context
 async function authenticateSession(req, res, next) {
     try {
         const authHeader = req.headers['authorization'];
@@ -11,14 +11,16 @@ async function authenticateSession(req, res, next) {
         const sessionId = authHeader.split(' ')[1];
         const db = await openDb();
 
-        // Join session with user and their branch/department
+        // Join session with user, organization, branch, and department
         const sessionUser = await db.get(`
             SELECT s.id AS sessionId, s.mfa_verified, s.last_active, 
-                   u.id, u.name, u.id_number, u.role, u.branch_id, u.department_id, u.mfa_enabled, u.status,
+                   u.id, u.organization_id, u.name, u.id_number, u.role, u.branch_id, u.department_id, u.mfa_enabled, u.status,
                    b.name_en AS branch_name_en, b.name_ar AS branch_name_ar,
-                   d.name_en AS dept_name_en, d.name_ar AS dept_name_ar
+                   d.name_en AS dept_name_en, d.name_ar AS dept_name_ar,
+                   o.name AS org_name, o.slug AS org_slug, o.logo_url AS org_logo_url, o.theme_color AS org_theme_color, o.plan AS org_plan, o.status AS org_status
             FROM sessions s
             JOIN users u ON s.user_id = u.id
+            LEFT JOIN organizations o ON u.organization_id = o.id
             LEFT JOIN branches b ON u.branch_id = b.id
             LEFT JOIN departments d ON u.department_id = d.id
             WHERE s.id = ?
@@ -32,7 +34,11 @@ async function authenticateSession(req, res, next) {
             return res.status(403).json({ error: 'User account is inactive or suspended' });
         }
 
-        // Check if session has timed out (e.g. 2 hours inactivity)
+        if (sessionUser.org_status && sessionUser.org_status !== 'active') {
+            return res.status(403).json({ error: 'Organization account is inactive or suspended' });
+        }
+
+        // Check session timeout (2 hours)
         const lastActiveTime = new Date(sessionUser.last_active).getTime();
         const currentTime = new Date().getTime();
         const twoHours = 2 * 60 * 60 * 1000;
@@ -44,7 +50,6 @@ async function authenticateSession(req, res, next) {
 
         // If user has MFA enabled but session is not MFA verified
         if (sessionUser.mfa_enabled === 1 && sessionUser.mfa_verified === 0) {
-            // Only allow hitting the MFA verification API itself
             if (req.path !== '/api/auth/mfa-verify' && req.path !== '/api/auth/logout') {
                 return res.status(403).json({ error: 'MFA verification required', mfaRequired: true, sessionId });
             }
@@ -54,9 +59,12 @@ async function authenticateSession(req, res, next) {
         const now = new Date().toISOString();
         await db.run('UPDATE sessions SET last_active = ? WHERE id = ?', [now, sessionId]);
 
-        // Attach user info to request
+        const orgId = sessionUser.organization_id || 'org_default';
+
+        // Attach tenant & user info to request
         req.user = {
             id: sessionUser.id,
+            organization_id: orgId,
             name: sessionUser.name,
             id_number: sessionUser.id_number,
             role: sessionUser.role,
@@ -69,6 +77,16 @@ async function authenticateSession(req, res, next) {
             mfa_enabled: sessionUser.mfa_enabled === 1,
             section: sessionUser.department_id ? sessionUser.department_id.split('-').pop() : undefined
         };
+
+        req.organization = {
+            id: orgId,
+            name: sessionUser.org_name || 'EngiNexa',
+            slug: sessionUser.org_slug || 'default',
+            logo_url: sessionUser.org_logo_url || '/logo.png',
+            theme_color: sessionUser.org_theme_color || '#0B3D4E',
+            plan: sessionUser.org_plan || 'enterprise'
+        };
+
         req.sessionId = sessionId;
         req.mfaVerified = sessionUser.mfa_verified === 1;
 
@@ -116,20 +134,21 @@ function requirePermissions(requiredPerms) {
     };
 }
 
-// Centralized Audit Logging Helper
+// Centralized Audit Logging Helper with Tenant Scoping
 async function logAction(req, action, module, details = '') {
     try {
         const db = await openDb();
+        const orgId = req.user?.organization_id || req.organization?.id || 'org_default';
         const userId = req.user?.id || null;
         const userName = req.user?.name || 'Anonymous';
-        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
+        const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '';
         const userAgent = req.headers['user-agent'] || '';
         const timestamp = new Date().toISOString();
 
         await db.run(`
-            INSERT INTO audit_logs (user_id, user_name, action, module, details, ip_address, user_agent, timestamp)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        `, [userId, userName, action, module, details, ip, userAgent, timestamp]);
+            INSERT INTO audit_logs (organization_id, user_id, user_name, action, module, details, ip_address, user_agent, timestamp)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `, [orgId, userId, userName, action, module, details, ip, userAgent, timestamp]);
     } catch (error) {
         console.error('Audit Logging Failed:', error);
     }

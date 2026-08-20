@@ -28,7 +28,7 @@ interface SidebarProps {
 
 export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     const { t, i18n } = useTranslation();
-    const { logout, user } = useAuth();
+    const { logout, user, organization } = useAuth();
     const isRTL = i18n.dir() === 'rtl';
     const [isCorrOpen, setIsCorrOpen] = React.useState(false);
     const [isDesignOpen, setIsDesignOpen] = React.useState(true);
@@ -95,19 +95,19 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
                 {/* ── Logo header ── */}
                 <div className="relative z-10 px-5 py-5 border-b border-slate-100 dark:border-white/10 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
                         <div className="w-10 h-10 bg-slate-50 dark:bg-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm border border-slate-100 dark:border-transparent p-1.5">
-                            <img src={logo} alt="EngiNexa" className="w-full h-full object-contain" />
+                            <img src={organization?.logo_url || logo} alt={organization?.name || "EngiNexa"} className="w-full h-full object-contain" />
                         </div>
-                        <div>
+                        <div className="min-w-0">
                             <p
-                                className="text-brand-900 dark:text-white font-bold text-sm leading-tight"
+                                className="text-brand-900 dark:text-white font-bold text-sm leading-tight truncate"
                                 style={{ fontFamily: isRTL ? "'Cairo', sans-serif" : "'Playfair Display', serif" }}
                             >
-                                EngiNexa
+                                {organization?.name || 'EngiNexa'}
                             </p>
-                            <p className="text-slate-400 dark:text-brand-300 text-[10px] tracking-wider mt-0.5 font-medium">
-                                {isRTL ? 'نظام الأرشفة الذكي' : 'Archiving System'}
+                            <p className="text-slate-400 dark:text-brand-300 text-[10px] tracking-wider mt-0.5 font-medium truncate">
+                                {organization?.slug ? `@${organization.slug}` : (isRTL ? 'نظام الأرشفة الذكي' : 'Archiving System')}
                             </p>
                         </div>
                     </div>

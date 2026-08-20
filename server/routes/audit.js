@@ -3,14 +3,15 @@ const router = express.Router();
 const { openDb } = require('../db');
 const { authenticateSession, requirePermissions } = require('../middleware/auth');
 
-// GET /api/audit-logs - Read and filter system-wide audit logs
+// GET /api/audit-logs - Read and filter audit logs scoped to the current organization
 router.get('/', authenticateSession, requirePermissions(['audit:read']), async (req, res) => {
     try {
         const { user_id, action, module, start_date, end_date, limit = 100, offset = 0 } = req.query;
+        const orgId = req.user.organization_id;
         const db = await openDb();
 
-        let query = `SELECT * FROM audit_logs WHERE 1=1`;
-        const params = [];
+        let query = `SELECT * FROM audit_logs WHERE organization_id = ?`;
+        const params = [orgId];
 
         if (user_id) {
             query += ` AND user_id = ?`;

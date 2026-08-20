@@ -11,7 +11,6 @@ const resources = {
                 "logout": "Logout",
                 "dashboard": "Dashboard",
                 "projects": "Projects",
-
                 "support": "Support",
                 "need_help": "Need Help?",
                 "need_help_desc": "Contact our support team for any technical issues or inquiries about EngiNexa.",
@@ -42,7 +41,30 @@ const resources = {
                 "email": "Email Address",
                 "password": "Password",
                 "signin": "Sign In",
-                "welcome": "Welcome back"
+                "welcome": "Welcome back",
+                "sign_in_tab": "Sign In",
+                "register_org_tab": "Register Organization",
+                "org_name": "Organization Name",
+                "org_name_placeholder": "e.g. Apex Engineering Consultants",
+                "org_slug": "Organization Code / Identifier",
+                "org_slug_placeholder": "e.g. apex-eng",
+                "org_slug_optional": "Organization Code (Optional for default)",
+                "admin_name": "Admin Full Name",
+                "admin_name_placeholder": "e.g. Fahad Al-Otaibi",
+                "id_number": "ID Number / National ID",
+                "id_number_placeholder": "Enter 10-digit ID",
+                "register_btn": "Register & Launch Platform",
+                "already_registered": "Already have an account? Sign in",
+                "new_to_platform": "Want EngiNexa for your organization? Register now"
+            },
+            "org": {
+                "profile": "Organization Profile",
+                "branding": "Branding & Customization",
+                "subscription": "Subscription & Plan",
+                "code": "Organization Code",
+                "branches_count": "Active Branches",
+                "users_count": "Team Members",
+                "projects_count": "Managed Projects"
             }
         }
     },
@@ -54,7 +76,6 @@ const resources = {
                 "logout": "تسجيل الخروج",
                 "dashboard": "لوحة التحكم",
                 "projects": "المشاريع",
-
                 "support": "الدعم الفني",
                 "need_help": "هل تحتاج مساعدة؟",
                 "need_help_desc": "تواصل مع فريق الدعم الفني لأي استفسارات أو مشاكل تقنية في نظام EngiNexa.",
@@ -85,7 +106,30 @@ const resources = {
                 "email": "البريد الإلكتروني",
                 "password": "كلمة المرور",
                 "signin": "دخول",
-                "welcome": "أهلاً بك"
+                "welcome": "أهلاً بك",
+                "sign_in_tab": "تسجيل الدخول",
+                "register_org_tab": "تسجيل منظمة جديدة",
+                "org_name": "اسم المنظمة / المكتب الهندسي",
+                "org_name_placeholder": "مثال: دار الاستشارات الهندسية",
+                "org_slug": "رمز المنظمة / المعرّف",
+                "org_slug_placeholder": "مثال: dar-consult",
+                "org_slug_optional": "رمز المنظمة (اختياري للنظام الافتراضي)",
+                "admin_name": "اسم المدير المسؤول",
+                "admin_name_placeholder": "مثال: م. فهد العتيبي",
+                "id_number": "رقم الهوية / الإقامة",
+                "id_number_placeholder": "أدخل رقم الهوية (10 أرقام)",
+                "register_btn": "تسجيل وإطلاق المنظومة",
+                "already_registered": "هل لديك حساب بالفعل؟ سجل دخولك",
+                "new_to_platform": "هل ترغب في نظام EngiNexa لمنظمتك؟ سجل الآن"
+            },
+            "org": {
+                "profile": "ملف المنظمة",
+                "branding": "الهوية والتخصيص",
+                "subscription": "الاشتراك والباقة",
+                "code": "رمز المنظمة",
+                "branches_count": "الفروع المفعلة",
+                "users_count": "أعضاء الفريق",
+                "projects_count": "المشاريع المدارة"
             }
         }
     }
@@ -95,7 +139,7 @@ i18n
     .use(initReactI18next)
     .init({
         resources,
-        lng: "ar", // Default to Arabic as requested implicitly by company name (Mecca)
+        lng: "ar", // Default to Arabic
         fallbackLng: "en",
         interpolation: {
             escapeValue: false

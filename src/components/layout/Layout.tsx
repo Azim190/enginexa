@@ -8,7 +8,7 @@ import { SupportModal } from '../ui/SupportModal';
 import { ToastContainer } from '../ui/Toast';
 
 export const Layout = () => {
-    const { user } = useAuth();
+    const { user, organization } = useAuth();
     const { i18n, t } = useTranslation();
     const [isSupportOpen, setIsSupportOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -60,13 +60,13 @@ export const Layout = () => {
                                 className="text-base font-bold text-brand-700 tracking-tight"
                                 style={{ fontFamily: i18n.dir() === 'rtl' ? "'Cairo', sans-serif" : "'Playfair Display', serif" }}
                             >
-                                {t('app.title')}
+                                {organization?.name || t('app.title')}
                             </h1>
                         </div>
 
                         {/* Mobile title */}
                         <h1 className="text-sm font-bold text-brand-700 md:hidden" style={{ fontFamily: "'Syne', sans-serif" }}>
-                            {t('app.title')}
+                            {organization?.name || t('app.title')}
                         </h1>
                     </div>
 

@@ -5,7 +5,7 @@ import { useToast } from '../contexts/ToastContext';
 import {
     Building2, FolderTree, Users, Settings, History, Plus,
     Edit2, Trash2, Shield, ToggleLeft, ToggleRight, Search,
-    Filter, RefreshCw, X, ShieldAlert
+    Filter, RefreshCw, X, ShieldAlert, Sparkles, Building
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -59,13 +59,21 @@ interface AuditLog {
 }
 
 export const AdminConsole = () => {
-    const { token, user: currentUser } = useAuth();
+    const { token, user: currentUser, organization, updateOrganization } = useAuth();
     const { toast } = useToast();
     const { i18n } = useTranslation();
     const isRTL = i18n.dir() === 'rtl';
 
     // Tabs state
-    const [activeTab, setActiveTab] = useState<'users' | 'branches' | 'departments' | 'settings' | 'audit'>('users');
+    const [activeTab, setActiveTab] = useState<'organization' | 'users' | 'branches' | 'departments' | 'settings' | 'audit'>('organization');
+
+    // Organization details & edit form
+    const [orgDetails, setOrgDetails] = useState<any>(null);
+    const [orgForm, setOrgForm] = useState({
+        name: organization?.name || '',
+        theme_color: organization?.theme_color || '#0B3D4E',
+        logo_url: organization?.logo_url || ''
+    });
 
     // Data lists
     const [branches, setBranches] = useState<Branch[]>([]);
@@ -202,9 +210,29 @@ export const AdminConsole = () => {
         }
     }, [token]);
 
+    const fetchOrgDetails = useCallback(async () => {
+        try {
+            const res = await fetch('/api/organizations/current', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setOrgDetails(data);
+                setOrgForm({
+                    name: data.name || '',
+                    theme_color: data.theme_color || '#0B3D4E',
+                    logo_url: data.logo_url || ''
+                });
+            }
+        } catch (e) {
+            console.error('Fetch org details failed', e);
+        }
+    }, [token]);
+
     const loadAllData = useCallback(async () => {
         setLoading(true);
         await Promise.all([
+            fetchOrgDetails(),
             fetchBranches(),
             fetchDepartments(),
             fetchEmployees(),
@@ -212,7 +240,7 @@ export const AdminConsole = () => {
             fetchAuditLogs()
         ]);
         setLoading(false);
-    }, [fetchBranches, fetchDepartments, fetchEmployees, fetchSettings, fetchAuditLogs]);
+    }, [fetchOrgDetails, fetchBranches, fetchDepartments, fetchEmployees, fetchSettings, fetchAuditLogs]);
 
     useEffect(() => {
         if (token) {
@@ -413,6 +441,26 @@ export const AdminConsole = () => {
         }
     };
 
+    // Save Organization Profile & Branding
+    const handleOrgSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setSubmitting(true);
+        try {
+            const success = await updateOrganization(orgForm);
+            if (success) {
+                toast('success', isRTL ? 'تم تحديث بيانات المنظمة والهوية بنجاح' : 'Organization & Branding updated', '');
+                fetchOrgDetails();
+                fetchAuditLogs();
+            } else {
+                throw new Error('Failed to update organization');
+            }
+        } catch (err: any) {
+            toast('error', isRTL ? 'خطأ في التحديث' : 'Failed to update organization', err.message);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
     // Helper functions for options
     const openAddUser = () => {
         setEditingUser(null);
@@ -526,6 +574,7 @@ export const AdminConsole = () => {
             {/* Main Tabs Navigation */}
             <div className="flex border-b border-slate-200 overflow-x-auto pb-px gap-1">
                 {[
+                    { id: 'organization', label: isRTL ? 'ملف المنظمة والهوية' : 'Organization & Branding', icon: Sparkles },
                     { id: 'users', label: isRTL ? 'الموظفين والمستخدمين' : 'Employees & Staff', icon: Users },
                     { id: 'branches', label: isRTL ? 'الفروع الجغرافية' : 'Branches', icon: Building2 },
                     { id: 'departments', label: isRTL ? 'الأقسام الإدارية' : 'Departments', icon: FolderTree },
@@ -558,6 +607,149 @@ export const AdminConsole = () => {
             ) : (
                 <div className="min-h-[50vh]">
                     <AnimatePresence mode="wait">
+                        {/* ── TAB 0: ORGANIZATION & BRANDING ── */}
+                        {activeTab === 'organization' && (
+                            <motion.div
+                                key="organization"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                className="space-y-6"
+                            >
+                                {/* Metrics Overview */}
+                                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                    <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold">
+                                            <Building className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">{isRTL ? 'رمز المنظمة' : 'Organization Code'}</p>
+                                            <p className="text-base font-bold text-brand-900 font-mono">@{organization?.slug || 'default'}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-xl bg-gold-50 text-gold-600 flex items-center justify-center font-bold">
+                                            <Building2 className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">{isRTL ? 'الفروع النشطة' : 'Active Branches'}</p>
+                                            <p className="text-xl font-bold text-brand-900">{orgDetails?.stats?.branches ?? branches.length}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+                                            <Users className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">{isRTL ? 'فريق العمل' : 'Team Members'}</p>
+                                            <p className="text-xl font-bold text-brand-900">{orgDetails?.stats?.users ?? employees.length}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                                            <Sparkles className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">{isRTL ? 'باقة الاشتراك' : 'Plan & Status'}</p>
+                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                                {organization?.plan?.toUpperCase() || 'ENTERPRISE'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Edit Organization Profile Card */}
+                                <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                                    <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                                        <div>
+                                            <h3 className="text-lg font-bold text-brand-900">
+                                                {isRTL ? 'تخصيص هوية وبيانات المنظمة' : 'Customize Organization Identity'}
+                                            </h3>
+                                            <p className="text-slate-400 text-xs mt-0.5">
+                                                {isRTL ? 'تحديث الاسم الرسمي، الشعار الخاص، والألوان المعتمدة لمساحة عملك' : 'Update the official name, custom logo, and theme color for this workspace'}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <form onSubmit={handleOrgSubmit} className="space-y-5 max-w-2xl">
+                                        <div>
+                                            <label className="block text-xs font-semibold text-slate-700 mb-2">
+                                                {isRTL ? 'اسم المنظمة / المكتب الهندسي' : 'Organization Name'}
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={orgForm.name}
+                                                onChange={(e) => setOrgForm({ ...orgForm, name: e.target.value })}
+                                                className="input text-brand-900"
+                                                required
+                                            />
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-xs font-semibold text-slate-700 mb-2">
+                                                    {isRTL ? 'رمز المنظمة (ثابت)' : 'Organization Code (Slug)'}
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    value={organization?.slug || 'default'}
+                                                    disabled
+                                                    className="input bg-slate-50 text-slate-400 font-mono cursor-not-allowed"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-xs font-semibold text-slate-700 mb-2">
+                                                    {isRTL ? 'لون الهوية الأساسي' : 'Primary Theme Color'}
+                                                </label>
+                                                <div className="flex items-center gap-3">
+                                                    <input
+                                                        type="color"
+                                                        value={orgForm.theme_color}
+                                                        onChange={(e) => setOrgForm({ ...orgForm, theme_color: e.target.value })}
+                                                        className="w-12 h-10 p-1 rounded-xl border border-slate-200 cursor-pointer"
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        value={orgForm.theme_color}
+                                                        onChange={(e) => setOrgForm({ ...orgForm, theme_color: e.target.value })}
+                                                        className="input flex-1 text-brand-900 font-mono text-xs uppercase"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-xs font-semibold text-slate-700 mb-2">
+                                                {isRTL ? 'رابط الشعار المخصص (اختياري)' : 'Custom Logo URL (Optional)'}
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={orgForm.logo_url}
+                                                onChange={(e) => setOrgForm({ ...orgForm, logo_url: e.target.value })}
+                                                className="input text-brand-900 text-xs"
+                                                placeholder="/logo.png or https://..."
+                                            />
+                                        </div>
+
+                                        <div className="pt-2">
+                                            <button
+                                                type="submit"
+                                                disabled={submitting}
+                                                className="px-6 py-3 bg-brand-600 text-white rounded-xl font-bold text-xs hover:bg-brand-700 transition-all shadow-sm disabled:opacity-60"
+                                            >
+                                                {submitting ? (isRTL ? 'جاري الحفظ...' : 'Saving...') : (isRTL ? 'حفظ تعديلات المنظمة' : 'Save Organization Details')}
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </motion.div>
+                        )}
+
                         {/* ── TAB 1: USERS ── */}
                         {activeTab === 'users' && (
                             <motion.div
