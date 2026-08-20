@@ -77,7 +77,7 @@ export const Login = () => {
                 <div className="relative z-10 text-center max-w-md">
                     {/* Logo */}
                     <div className="w-28 h-28 bg-white rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl p-3">
-                        <img src={logo} alt="Dar Makkah Logo" className="w-full h-full object-contain" />
+                        <img src={logo} alt="EngiNexa Logo" className="w-full h-full object-contain" />
                     </div>
 
                     {/* Brand name */}
@@ -118,7 +118,7 @@ export const Login = () => {
                     <div className="mashrabiya-overlay absolute inset-0 pointer-events-none opacity-40" />
                     <div className="relative z-10">
                         <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-3 p-2 shadow-lg">
-                            <img src={logo} alt="Dar Makkah" className="w-full h-full object-contain" />
+                            <img src={logo} alt="EngiNexa" className="w-full h-full object-contain" />
                         </div>
                         <h2 className="text-white font-bold text-lg">{t('app.title')}</h2>
                     </div>

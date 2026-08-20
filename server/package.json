@@ -1,7 +1,7 @@
 {
-    "name": "archiving-system-server",
+    "name": "enginexa-server",
     "version": "1.0.0",
-    "description": "Backend for Archiving System",
+    "description": "Backend for EngiNexa",
     "main": "index.js",
     "scripts": {
         "start": "node index.js"

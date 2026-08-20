@@ -177,7 +177,7 @@ export const LogSheet: React.FC = () => {
                         {/* Printable layout header (only visible during print) */}
                         <div className="hidden print:block text-center py-6 border-b border-slate-200 mb-6">
                             <h1 className="text-2xl font-bold text-brand-700 uppercase" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                Dar Makkah Engineering Consultants
+                                EngiNexa Engineering Consultants
                             </h1>
                             <p className="text-slate-500 text-sm mt-1">Project Log Sheet — {isAdminOrCeo ? 'All Departments' : `${user?.section} Department`}</p>
                             <p className="text-xs text-slate-400 mt-0.5">Date generated: {new Date().toLocaleDateString()}</p>

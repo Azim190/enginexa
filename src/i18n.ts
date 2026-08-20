@@ -6,7 +6,7 @@ const resources = {
     en: {
         translation: {
             "app": {
-                "title": "Dar Makkah Engineering Consultants",
+                "title": "EngiNexa",
                 "login": "Login",
                 "logout": "Logout",
                 "dashboard": "Dashboard",
@@ -14,9 +14,9 @@ const resources = {
 
                 "support": "Support",
                 "need_help": "Need Help?",
-                "need_help_desc": "Contact our support team for any technical issues or inquiries about the archiving system.",
+                "need_help_desc": "Contact our support team for any technical issues or inquiries about EngiNexa.",
                 "contact_support": "Contact Support",
-                "welcome_message": "Welcome to Dar Makkah Project Archiving System"
+                "welcome_message": "Welcome to EngiNexa Project Archiving System"
             },
             "sections": {
                 "architectural": "Architectural",
@@ -49,7 +49,7 @@ const resources = {
     ar: {
         translation: {
             "app": {
-                "title": "دار مكة للاستشارات الهندسية",
+                "title": "EngiNexa للاستشارات الهندسية",
                 "login": "تسجيل الدخول",
                 "logout": "تسجيل الخروج",
                 "dashboard": "لوحة التحكم",
@@ -57,9 +57,9 @@ const resources = {
 
                 "support": "الدعم الفني",
                 "need_help": "هل تحتاج مساعدة؟",
-                "need_help_desc": "تواصل مع فريق الدعم الفني لأي استفسارات أو مشاكل تقنية في نظام الأرشفة.",
+                "need_help_desc": "تواصل مع فريق الدعم الفني لأي استفسارات أو مشاكل تقنية في نظام EngiNexa.",
                 "contact_support": "تواصل مع الدعم",
-                "welcome_message": "مرحباً بك في نظام أرشفة مشاريع دار مكة"
+                "welcome_message": "مرحباً بك في نظام أرشفة وإدارة مشاريع EngiNexa"
             },
             "sections": {
                 "architectural": "قسم المعماري",

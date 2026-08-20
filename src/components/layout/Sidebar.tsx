@@ -97,14 +97,14 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 <div className="relative z-10 px-5 py-5 border-b border-slate-100 dark:border-white/10 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-slate-50 dark:bg-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm border border-slate-100 dark:border-transparent p-1.5">
-                            <img src={logo} alt="Dar Makkah" className="w-full h-full object-contain" />
+                            <img src={logo} alt="EngiNexa" className="w-full h-full object-contain" />
                         </div>
                         <div>
                             <p
                                 className="text-brand-900 dark:text-white font-bold text-sm leading-tight"
                                 style={{ fontFamily: isRTL ? "'Cairo', sans-serif" : "'Playfair Display', serif" }}
                             >
-                                {isRTL ? 'دار مكة' : 'Dar Makkah'}
+                                EngiNexa
                             </p>
                             <p className="text-slate-400 dark:text-brand-300 text-[10px] tracking-wider mt-0.5 font-medium">
                                 {isRTL ? 'استشارات هندسية' : 'Engineering'}
