@@ -371,14 +371,14 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ title, type }) => {
                         <select
                             value={yearFilter}
                             onChange={(e) => setYearFilter(e.target.value)}
-                            className="input h-10 pr-8 text-sm appearance-none cursor-pointer min-w-[120px]"
+                            className="input h-10 pr-8 rtl:pr-3.5 rtl:pl-8 text-sm appearance-none cursor-pointer min-w-[120px]"
                         >
                             <option value="all">All Years</option>
                             {allYears.map(y => (
                                 <option key={y} value={y}>{y}</option>
                             ))}
                         </select>
-                        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                        <ChevronDown className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                     </div>
 
                     {/* Sort */}
@@ -386,13 +386,13 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ title, type }) => {
                         <select
                             value={sortBy}
                             onChange={(e) => setSortBy(e.target.value as any)}
-                            className="input h-10 pr-8 text-sm appearance-none cursor-pointer min-w-[140px]"
+                            className="input h-10 pr-8 rtl:pr-3.5 rtl:pl-8 text-sm appearance-none cursor-pointer min-w-[140px]"
                         >
                             <option value="date">Sort: Newest</option>
                             <option value="name">Sort: Name A–Z</option>
                             <option value="year">Sort: Year ↓</option>
                         </select>
-                        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                        <ChevronDown className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                     </div>
                 </div>
 

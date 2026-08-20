@@ -113,7 +113,7 @@ export const LogSheet: React.FC = () => {
                             <select
                                 value={deptFilter}
                                 onChange={e => setDeptFilter(e.target.value as any)}
-                                className="input h-10 pr-8 text-sm appearance-none cursor-pointer"
+                                className="input h-10 pr-8 rtl:pr-3.5 rtl:pl-8 text-sm appearance-none cursor-pointer"
                             >
                                 <option value="all">{isRTL ? 'جميع الأقسام' : 'All Departments'}</option>
                                 <option value="architectural">{t('sections.architectural')}</option>
@@ -124,7 +124,7 @@ export const LogSheet: React.FC = () => {
                                 <option value="supervision-industrial">{t('sections.supervision-industrial')}</option>
                                 <option value="supervision-client">{t('sections.supervision-client')}</option>
                             </select>
-                            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                            <ChevronDown className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                         </div>
                     )}
 
@@ -133,14 +133,14 @@ export const LogSheet: React.FC = () => {
                         <select
                             value={yearFilter}
                             onChange={e => setYearFilter(e.target.value)}
-                            className="input h-10 pr-8 text-sm appearance-none cursor-pointer"
+                            className="input h-10 pr-8 rtl:pr-3.5 rtl:pl-8 text-sm appearance-none cursor-pointer"
                         >
                             <option value="all">All Years</option>
                             {availableYears.map(y => (
                                 <option key={y} value={y}>{y}</option>
                             ))}
                         </select>
-                        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                        <ChevronDown className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                     </div>
 
                     {/* Status Filter */}
@@ -148,14 +148,14 @@ export const LogSheet: React.FC = () => {
                         <select
                             value={statusFilter}
                             onChange={e => setStatusFilter(e.target.value as any)}
-                            className="input h-10 pr-8 text-sm appearance-none cursor-pointer"
+                            className="input h-10 pr-8 rtl:pr-3.5 rtl:pl-8 text-sm appearance-none cursor-pointer"
                         >
                             <option value="all">All Statuses</option>
                             <option value="active">Active</option>
                             <option value="completed">Completed</option>
                             <option value="on-hold">On Hold</option>
                         </select>
-                        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                        <ChevronDown className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                     </div>
                 </div>
             </div>

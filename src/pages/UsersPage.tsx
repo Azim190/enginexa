@@ -247,13 +247,13 @@ export const UsersPage: React.FC = () => {
                     <select
                         value={roleFilter}
                         onChange={e => setRoleFilter(e.target.value as any)}
-                        className="input h-10 pr-8 text-sm appearance-none cursor-pointer min-w-[140px]"
+                        className="input h-10 pr-8 rtl:pr-3.5 rtl:pl-8 text-sm appearance-none cursor-pointer min-w-[140px]"
                     >
                         <option value="all">All Roles</option>
                         <option value="admin">Admins</option>
                         <option value="user">Engineers</option>
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                    <ChevronDown className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                 </div>
             </div>
 
